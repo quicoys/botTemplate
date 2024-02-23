@@ -11,7 +11,7 @@ console.log('-             quicbot systems           -');
 console.log('-----------------------------------------');
 
 const botArgs = {
-    host: '5b5t.org', // server
+    host: '', // server
     username: '',  //email
     password: '',  //password  
     auth: 'microsoft',  //authentication 
