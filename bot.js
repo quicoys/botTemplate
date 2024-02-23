@@ -11,7 +11,7 @@ console.log('-             quicbot systems           -');
 console.log('-----------------------------------------');
 
 const botArgs = {
-    host: '', // server
+    host: '5b5t.org', // server
     username: '',  //email
     password: '',  //password  
     auth: 'microsoft',  //authentication 
@@ -104,6 +104,26 @@ const theBot = () => {
                 }
             }
         }
+
+        if (args[0].toLowerCase().startsWith('randomn')) {
+            if (args.length < 4) {
+                bot.chat("> Invalid format, please use <decimals> <smallestnumber> <biggestnumber>");
+            } else {
+                let decimals = parseInt(args[1]);
+                let min = parseFloat(args[2]);
+                let max = parseFloat(args[3]);
+            
+                if (isNaN(decimals) || isNaN(min) || isNaN(max) || decimals < 0 || decimals > 30) {
+                    bot.chat('> Invalid input. Please make sure all inputs are valid numbers and decimals are between 0 and 30.');
+                } else {
+                    const randomValue = Math.random() * (max - min) + min;
+                    const roundedRandomNumber = randomValue.toFixed(decimals);
+            
+                    bot.chat(`> generated: ${roundedRandomNumber}`);
+                }
+            }
+        }
+                
 
         // Coords
         if (args[0].toLowerCase() === 'coords') {
