@@ -9,10 +9,12 @@ steps to make it work:
 
 2.  open a terminal and run "npm install mineflayer"
 
-3.  create a new file
+3.  create a new folder
 
-4.  navigate to the file with the terminal (cd)
+4.  create a bot.js and a common.js
 
-5.  run it by executing the following: "node <filename>.js"
+5.  navigate to the file with the terminal (cd)
 
-6.  wait and see it booting up!
+6.  run it by executing the following: "node bot.js"
+
+7.  wait and see it booting up!
