@@ -3,18 +3,18 @@ This is a quicbot template, that you can use to create a (chat)bot
 
 
 ----------------------------------
-steps to make it work:
+Steps to make it runnable!
 
-1. download nodejs
+1. Install NodeJS
 
-2.  open a terminal and run "npm install mineflayer"
+2.  Install needed packages (eg. mineflayer with `npm install mineflayer`)
 
-3.  create a new folder
+3.  Create a new directory
 
-4.  create a bot.js and a common.js
+4.  Create a file with the JavaScript (.js) file extension. You can call it something like: "bot.js"
 
-5.  navigate to the file with the terminal (cd)
+5.  Make sure you are in the correct directory when you try to run the bot!
 
-6.  run it by executing the following: "node bot.js"
+6.  Run it by in the terminal, which is in the correct dir, typing `node FileName.js` (`node bot.js`) 
 
-7.  wait and see it booting up!
+7.  Now, it should be up and running shortly. Do not expect it to take more than 10 seconds. Make sure you have the right credentials and host if things arent working as expected. Questions should get answered here, but https://dsc.gg/quicbot is the official quicbot server where I will look into more often. Good luck!
