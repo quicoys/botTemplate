@@ -1,199 +1,139 @@
 const mineflayer = require('mineflayer');
+const axios = require('axios');
+const { number } = require('yargs');
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
-const greetings = ['Hello', 'Hi', 'Yo', 'Wazzup', 'Howdy', 'Hola'];
+function getAllArgs(args) {
+    return getArgs(args, 1);
+}
 
-console.log('-----------------------------------------');
-console.log('-             quicbot systems           -');
-console.log('-----------------------------------------');
+
+function getArgs(args, startIndex) {
+
+
+    output = '';
+    for (let index = startIndex; index < args.length; ++index) {
+        output += args[index];
+        if (index+1 < args.length) output += ' ';
+    }
+    return output;
+}
+
+const greetings = ["Hello", "Hi", "Yo", "Wazzup", "Howdy", "Hola"];
+
+
+console.log('--------------------------------------------------------------------');
+console.log('-                    quicbot systems: bot template.                -');
+console.log('--------------------------------------------------------------------');
 
 const botArgs = {
-    host: '5b5t.org', // server
-    username: '',  //email
-    password: '',  //password  
-    auth: 'microsoft',  //authentication 
-    version: '1.12.2'
+    host: '',
+    username: '<EMAIL (if microsoft auth)>',
+    password: '',
+    auth: '',
+    version: '' //blank for auto
 };
 
 const initBot = () => {
-    let bot = mineflayer.createBot(botArgs);
+  let bot = mineflayer.createBot(botArgs);
 
-    const prefix = '!';
-    const adminPrefix = '$';
+  const prefix = '!';
+  const masterPrefix = '$';
+  const admin = 'quicoys' //you can replace "quicoys" with your username
 
-    bot.once('spawn', () => {
-        bot.chat(`${bot.username} joined!`);
-    });
+  bot.on('end', (reason) => {
+      console.log(`[${bot.username}] Disconnected. Reason: ${reason}`);
+      setTimeout(initBot, 5000); //reconnect.
+  });
 
-    bot.on('login', () => {
-        let botSocket = bot._client.socket;
-        console.log(`Logged in to ${botSocket.server ? botSocket.server : botSocket._host}`);
-    });
+  bot.on('login', () => {
+      let botSocket = bot._client.socket;
+      console.log(`Logged in to ${botSocket.server ? botSocket.server : botSocket._host}`);
+  });
 
-    bot.on('end', (reason) => {
-        let botSocket = bot._client.socket;
-        console.log(`[${bot.username}] Disconnected from ${botSocket.server || botSocket._host} reason ${reason}`);
-        setTimeout(theBot, 5000);
-    });
+  bot.on('chat', async (username, message) => {
+      const currentDate = new Date().toLocaleString();
 
-    bot.on('chat', async (username, message) => {
-        console.log(`<${username}> ${message}`);
-        if (username === bot.username) return;
-        if (username === 'enter' || username === 'adminuser' && message.startsWith(adminPrefix)) {
-            console.log(`admincommand executed ${message} `);
-            const msg = message.slice(1);
-            const args = msg.split(' ');
-            if (args[0].toLowerCase().startsWith('coord') || args[0].toLowerCase().startsWith('pos')) {
-                const position = bot.entity.position;
-                const roundedPosition = {
-                    x: parseFloat(position.x.toFixed(2)),
-                    y: parseFloat(position.y.toFixed(2)),
-                    z: parseFloat(position.z.toFixed(2))
-                };
-                console.log(`x ${roundedPosition.x}, y ${roundedPosition.y}, z ${roundedPosition.z}`); // sends coords to console
-                bot.chat(`/msg ${username} x ${roundedPosition.x}, y ${roundedPosition.y}, z ${roundedPosition.z}`); // whispers the bot's current coords to the admin user 
+      const msg = message.slice(1);
+      const args = msg.split(' ');
+    if (username === admin ) {
+
+        if (args[0].toLowerCase() === 'repeat') {
+            if (args[1]) {
+                output = getAllArgs(args);
+                bot.chat(`> ${output}`);
             }
         }
-    });
+      }
 
-    bot.on('kicked', (reason) => {
-        let botSocket = bot._client.socket;
-        console.log(`[${bot.username}] Kicked from ${botSocket.server || botSocket._host} reason ${reason}`);
-    });
+      if (message.startsWith(prefix)) {
+          if (!args[0]) return;
 
-    bot.on('spawn', async () => {
-        console.log(`Spawned`);
-    });
 
-    bot.on('death', () => {
-        console.log(`Died`);
-    });
-
-    bot.on('error', (err) => {
-        if (err.code === 'ECONNREFUSED') {
-            console.log(`Failed to connect to ${err.address}:${err.port}`);
-        } else {
-            console.log(`Unhandled error ${err}`);
-        }
-    });
-};
-
-const theBot = () => {
-    if (jsonMsg.startsWith(prefix)) {
-        const msg = jsonMsg.slice(1);
-        const args = msg.split(' ');
-
-        if (!args[0]) return;
-
-        if (args[0].toLowerCase().startsWith('ping')) {
+          if (args[0].toLowerCase().startsWith('mindreader')) {
             if (args.length < 2) {
-                bot.chat(`${username}'s ping is ${bot.players[username].ping}`);
+                bot.chat(`this is a super advanced program that can read your mind. Please use ${prefix}mindreader <number 1-10> to experience this advanced application.`)
+                return;
+            } if (isNaN(args[1]) || Number(args[1]*(-1) <= 0) || Number(args[1]) > 1 || Number(args[1]) < 10) {
+                bot.chat(`are you dumb? input a NUMBER, 1-10.`)
+                return;
             }
+            bot.chat(`Thinking... Analysing... Reasoning... This may take a few seconds.`)
 
-            if (args.length >= 2) {
-                if (args[1] === '') {
-                    bot.chat(`${username}'s ping is ${bot.players[username].ping}`);
-                }
-                if (args[1] in bot.players) {
-                    bot.chat(`${args[1]}'s ping is ${bot.players[args[1]].ping}ms`);
-                } else {
-                    bot.chat(`${args[1]} is not online!`);
-                }
-            }
-        }
+            setTimeout(() => {
+                bot.chat(`${username}; was your number ${args[1]}?`)
+            }, Math.random() * 1000);
+        
 
-        if (args[0].toLowerCase().startsWith('randomn')) {
-            if (args.length < 4) {
-                bot.chat("> Invalid format, please use <decimals> <smallestnumber> <biggestnumber>");
+         }
+
+          if (args[0].toLowerCase().startsWith('test')) {
+            if (args.length < 2) {
+                bot.chat('Hey! this is an example command. It can do anything you want!')
+                console.log(Math.random())
+                console.log('')
+                console.log('Online players on:' + botArgs['host'])
+                setTimeout(() => {
+                    bot.chat(`my admin is: ${admin}, you are ${username}, the time in unix timestamp is: ${Date.now()} and I am: ${bot.username}`)
+                }, 2000 + Math.random() * 100); //two seconds + a number from 1 to 0 times 100 (+-50ms)
+                for (const userId in bot.players) {
+                        console.log(userId);
+                }
             } else {
-                let decimals = parseInt(args[1]);
-                let min = parseFloat(args[2]);
-                let max = parseFloat(args[3]);
-            
-                if (isNaN(decimals) || isNaN(min) || isNaN(max) || decimals < 0 || decimals > 30) {
-                    bot.chat('> Invalid input. Please make sure all inputs are valid numbers and decimals are between 0 and 30.');
-                } else {
-                    const randomValue = Math.random() * (max - min) + min;
-                    const roundedRandomNumber = randomValue.toFixed(decimals);
-            
-                    bot.chat(`> generated: ${roundedRandomNumber}`);
-                }
+                bot.chat('ooh, arguments! here you can handle what should happen if someone provides more input!')
+                setTimeout(() => {
+                    if (!isNaN(args[1])) {
+                        bot.chat('you provided a number.')
+                    }
+                }, 2000);
             }
         }
-                
+      }
+  });
 
-        // Coords
-        if (args[0].toLowerCase() === 'coords') {
-            let min = -30000000;
-            let max = 30000000;
+  bot.on('kicked', (reason) => {
+      let botSocket = bot._client.socket;
+      console.log(`[${bot.username}] Kicked from ${botSocket.server ? botSocket.server : botSocket._host}. Reason: ${reason}`);
+  });
 
-            bot.chat(`Coords x ${Math.floor(Math.random() * (1 + max - min)) + min} z ${Math.floor(Math.random() * (1 + max - min)) + min}`);
-        }
+  bot.on('spawn', () => {
+      console.log(`Spawned`);
+  });
 
-        // Dox or Doxx
-        if (args[0].toLowerCase() === 'dox') {
-            let min = 0;
-            let max = 255;
+  bot.on('death', () => {
+      console.log(`Died`);
+  });
 
-            if (!args[0]) {
-                bot.chat(`${username}'s ip ${Math.floor(Math.random() * (1 + max - min)) + min}.${Math.floor(Math.random() * (1 + max - min)) + min}.${Math.floor(Math.random() * (1 + max - min)) + min}.${Math.floor(Math.random() * (1 + max - min)) + min} ez!`);
-            } else if (args[1]) {
-                bot.chat(`${args[1]}'s ip ${Math.floor(Math.random() * (1 + max - min)) + min}.${Math.floor(Math.random() * (1 + max - min)) + min}.${Math.floor(Math.random() * (1 + max - min)) + min}.${Math.floor(Math.random() * (1 + max - min)) + min} ez!`);
-            }
-        }
-
-        if (args[0].toLowerCase() === 'no') {
-            bot.chat('NO');
-        }
-
-        if (args[0].toLowerCase() === 'yes') {
-            bot.chat('YES');
-        }
-
-        if (args[0].toLowerCase() === 'hello') {
-            bot.chat(greetings[getRandomInt(greetings.length)] + `, ${username} !`);
-        }
-
-        if (args[0].toLowerCase().startsWith('gay')) {
-            let min = 0;
-            let max = 100;
-
-            if (!args[0]) {
-                bot.chat(`${username} is ${Math.floor(Math.random() * (1 + max - min)) + min}.${Math.floor(Math.random() * (1 + max - min)) + min}% gay`);
-            } else if (args[1]) {
-                bot.chat(`${args[1]} is ${Math.floor(Math.random() * (1 + max - min)) + min}.${Math.floor(Math.random() * (1 + max - min)) + min}% gay`);
-            }
-        }
-
-        if (args[0].toLowerCase() === 'kit') {
-            if (!args[0]) {
-                bot.chat(`${username} just received the kit called ${args[1]}`);
-            }
-        }
-        bot.on('error', (err) => {
-            if (err.code === 'ECONNREFUSED') {
-                console.log(`Failed to connect to ${err.address}${err.port}`);
-            }
-            else {
-                console.log(`Unhandled error ${err}`);
-            }
-    
-        });
-
-    }
-
+  bot.on('error', (err) => {
+      if (err.code === 'ECONNREFUSED') {
+          console.log(`Failed to connect to ${err.address}:${err.port}`);
+      } else {
+          console.log(`Unhandled error: ${err}`);
+      }
+  });
 };
 
 initBot();
-
-
-
-
-        
-    
-
-
-
