@@ -1,5 +1,5 @@
 const mineflayer = require('mineflayer');
-const axios = require('axios');
+//const axios = require('axios'); //
 const { number } = require('yargs');
 
 function getRandomInt(max) {
