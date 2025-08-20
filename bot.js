@@ -85,7 +85,7 @@ const initBot = () => {
 
             setTimeout(() => {
                 bot.chat(`${username}; was your number ${args[1]}?`)
-            }, Math.random() * 1000);
+            }, (Math.random() * 8000) + 2000);
         
 
          }
