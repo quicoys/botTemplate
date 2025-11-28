@@ -52,7 +52,7 @@ const initBot = () => {
 
   bot.on('chat', async (username, message) => {
       const currentDate = new Date().toLocaleString();
-      console.log(`${currentDate} | ${username}: {message}`);
+      console.log(`${currentDate} | ${username}: ${message}`);
 
       const msg = message.slice(1);
       const args = msg.split(' ');
