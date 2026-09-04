@@ -72,7 +72,8 @@ const initBot = () => {
             if (args[0].toLowerCase().startsWith('mindreader')) {
                 if (args.length < 2) {
                     bot.chat(`this is a super advanced program that can read your mind. Please use ${prefix}mindreader <number 1-10> to experience this advanced application.`)
-                    return;
+                        return;
+                    }
                     const num = Number(args[1]);
                     if (isNaN(num) || num < 1 || num > 10) {
                         bot.chat(`are you dumb? input a NUMBER, 1-10.`)
@@ -81,7 +82,7 @@ const initBot = () => {
                     bot.chat(`Thinking... Analyzing... Reasoning... This may take a few seconds.`)
 
                     setTimeout(() => {
-                        bot.chat(`${username}; was your number ${args[1]}?`)
+                        bot.chat(`${username}; was your number ${num}?`)
                     }, (Math.random() * 8000) + 2000) // 2-10 second delay
                 }
             }
